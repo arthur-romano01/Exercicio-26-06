@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 interface Strategy {
     abstract String mensagem(String info);
 }
@@ -6,7 +8,7 @@ class Monday implements Strategy {
     @Override
     public String mensagem(String info) {
         System.out.println("Prioridade: ALTA \nDia consultado: segunda-feira");
-        return "Organize suas prioridades," + "suas tarefas são:" + info;
+        return "Organize suas prioridades, " + "suas tarefas são: " + info;
     }
 }
 
@@ -14,7 +16,7 @@ class Tuesday implements Strategy {
     @Override
     public String mensagem(String info) {
         System.out.println("Prioridade: MÉDIA \nDia consultado: terça-feira");
-        return "Avance nas tarefas pendentes," + "suas tarefas são:" + info;
+        return "Avance nas tarefas pendentes, " + "suas tarefas são: " + info;
     }
 }
 
@@ -22,7 +24,7 @@ class Wednesday implements Strategy {
     @Override
     public String mensagem(String info) {
         System.out.println("Prioridade: MÉDIA \nDia consultado: quarta-feira");
-        return "Revise o andamento de atividades," + "suas tarefas são:" + info;
+        return "Revise o andamento de atividades, " + "suas tarefas são: " + info;
     }
 }
 
@@ -30,7 +32,7 @@ class Thursday implements Strategy {
     @Override
     public String mensagem(String info) {
         System.out.println("Prioridade: MÉDIA \nDia consultado: quinta-feira");
-        return "Colabore com alguém da equipe," + "seus colegas são:" + info;
+        return "Colabore com alguém da equipe, " + "seus colegas são: " + info;
     }
 }
 
@@ -38,7 +40,7 @@ class Friday implements Strategy {
     @Override
     public String mensagem(String info) {
         System.out.println("Prioridade: BAIXA  \nDia consultado: sexta-feira");
-        return "Registre o que foi concluido," + "seus feitos são:" + info;
+        return "Registre o que foi concluido, " + "seus feitos são: " + info;
     }
 }
 
@@ -46,7 +48,7 @@ class Saturday implements Strategy {
     @Override
     public String mensagem(String info) {
         System.out.println("Prioridade: BAIXA \nDia consultado: sábado");
-        return "Realize estudo livre ou descanso" + "seus livros pendentes são:" + info;
+        return "Realize estudo livre ou descanso " + "seus livros pendentes são: " + info;
     }
 }
 
@@ -54,7 +56,7 @@ class Sunday implements Strategy {
     @Override
     public String mensagem(String info) {
         System.out.println("Prioridade: BAIXA  \nDia consultado: domingo");
-        return "Planeje a próxima semana" + "suas pendências são:" + info;
+        return "Planeje a próxima semana " + "suas pendências são: " + info;
     }
 }
 
@@ -68,11 +70,32 @@ class Null implements Strategy {
 
 class Execute {
     private Strategy strategy;
+    private Map<String, Strategy> estrategias = new HashMap<>();
 
-    public void setStrategy(Strategy strategy) {
+    public Execute(){
+        this. estrategias.put("segunda-feira", new Monday());
+        this.estrategias.put("terça-feira",   new Tuesday());
+        this.estrategias.put("quarta-feira",  new Wednesday());
+        this.estrategias.put("quinta-feira",  new Thursday());
+        this.estrategias.put("sexta-feira",   new Friday());
+        this.estrategias.put("sábado",        new Saturday());
+        this.estrategias.put("domingo",       new Sunday());
+    }
+
+    private void setStrategy(Strategy strategy) {
         this.strategy = strategy;
     }
-    public String execute(String info) {
+
+    //metodo que utiliza um dia inputado pelo usuário
+    public String execute(String dia, String info) {
+        this.setStrategy(estrategias.getOrDefault(dia, new Null()));
+        return strategy.mensagem(info);
+    }
+
+    //metodo que não necessita de input de dia retorna info do dia atual
+    public String execute(String info){
+        Dia dia = new Dia();
+        this.setStrategy(estrategias.getOrDefault(dia.diaDaSemana, new Null()));
         return strategy.mensagem(info);
     }
 }
