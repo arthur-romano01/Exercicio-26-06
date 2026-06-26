@@ -1,20 +1,18 @@
-import java.util.HashMap;
-import java.util.Map;
-
 class Dict {
     public static void main(String[] args) {
-        Map<String, Strategy> estrategias = new HashMap<>();
-        estrategias.put("segunda-feira", new Monday());
-        estrategias.put("terça-feira",   new Tuesday());
-        estrategias.put("quarta-feira",  new Wednesday());
-        estrategias.put("quinta-feira",  new Thursday());
-        estrategias.put("sexta-feira",   new Friday());
-        estrategias.put("sábado",        new Saturday());
-        estrategias.put("domingo",       new Sunday());
-        Dia dia = new Dia();
+        
         Execute ctx = new Execute();
-        ctx.setStrategy(estrategias.getOrDefault(dia.diaDaSemana, new Null()));
-        System.out.println(ctx.execute("tarefa 1, tarefa 2"));
+
+        //teste de execução para estrategia do dia atual (dia ausente)
+        System.out.println(ctx.execute("Tarefa 1"));
+        System.out.println();
+
+        //teste de execução para estrategia de um dia diferente do atual mas com estratégia presente
+        System.out.println(ctx.execute("quarta-feira", "tarefa 2"));
+        System.out.println();
+
+        //teste de execução para estrategia em que o dia está incorreto ou não há estratégia associada
+        System.out.println(ctx.execute("sextou com ProjOO", "outra mensagem qualquer"));
     }
 }
  
